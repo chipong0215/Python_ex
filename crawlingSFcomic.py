@@ -1,10 +1,10 @@
 # coding=utf-8
 
-import sys, os, requests
+import sys, os, requests, time
 from selenium import webdriver
 import logging
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', filename='crawlingLog.txt')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')#, filename='crawlingLog.txt')
 
 requests.adapters.DEFAULT_RETRIES = 5
 
@@ -14,7 +14,7 @@ def mkdir(path):
 
     if not os.path.exists(path):
         logging.info('Now is opening the new document.\n')
-        os.mkdir(path)
+        os.makedirs(path)
 
 
 def SavePic(filename, url):
@@ -56,8 +56,9 @@ def get_TOF(index_url):
 
     # Find the comic thread and create the directory
     title = browser.title.split(',')[0]
+    print(title)
     mkdir(title)
-    print title
+    
 
     logging.info('Give me the title: ' + title + '\n')
 
@@ -67,7 +68,7 @@ def get_TOF(index_url):
     comics_lists = browser.find_elements_by_class_name('serialise_list')
 
     logging.info('Printout the comics_lists: \n')
-    print comics_lists
+    print(comics_lists)
 
     # Find the standard contents
     for part in comics_lists:
@@ -82,7 +83,7 @@ def get_TOF(index_url):
     logging.info('Browser quit.\n')
     logging.info('Printout the url_lists: \n')
 
-    print url_list
+    print(url_list)
 
     Comics = dict(name=title, urls=url_list)
 
@@ -97,6 +98,8 @@ def get_pic(Comics):
     basedir = Comics['name']
 
     browser = webdriver.PhantomJS()
+    # self.driver = webdriver.PhantomJS('/Users/chancriss/Phantomjs/bin/phantomjs')
+    # driver = webdriver.PhantomJS(executable_path=r"D:\phantomjs\bin\phantomjs.exe")
     for url in comic_list:
         browser.get(url)
         browser.implicitly_wait(3)
