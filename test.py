@@ -13,6 +13,7 @@ import openpyxl, pprint, logging, copy
 wb = openpyxl.load_workbook(r'C:\Users\pongl\Documents\Python Scripts\Python_ex\censuspopdata.xlsx')
 sheet = wb.get_sheet_by_name('hihi')
 
+
 path = r'C:\Users\pongl\Documents\Python Scripts\Python_ex\test2.xlsx'
 openfile = openpyxl.Workbook()
 openfile.save(path)
@@ -20,15 +21,37 @@ openfile.save(path)
 wb2 = openpyxl.load_workbook(r'C:\Users\pongl\Documents\Python Scripts\Python_ex\test2.xlsx')
 sheet2 = wb2.active
 
-tmp = sheet2.cell(row=1, column=1)
-if sheet.cell(row=1, column=1).has_style:
-    tmp.font = copy.copy(sheet.cell(row=1, column=1).font)
-    tmp.border = copy.copy(sheet.cell(row=1, column=1).border)
-    tmp.fill = copy.copy(sheet.cell(row=1, column=1).fill)
-    tmp.number_format = copy.copy(sheet.cell(row=1, column=1).number_format)
-    tmp.protection = copy.copy(sheet.cell(row=1, column=1).protection)
-    tmp.alignment = copy.copy(sheet.cell(row=1, column=1).alignment)
-    tmp.value = sheet.cell(row=1, column=1).value
+# copyrange = sheet['A1':'F4']
+
+for row in list(sheet.rows)[0:4]:
+    for col in row:
+        tmp = sheet2[col.column + str(col.row)]
+        # str1 = str(col.row) + col.column]
+        # tmp = sheet2.cell(row=col.row, column=col.column)
+
+        tmp.font = copy.copy(col.font)
+        tmp.border = copy.copy(col.border)
+        tmp.fill = copy.copy(col.fill)
+        tmp.number_format = copy.copy(col.number_format)
+        tmp.protection = copy.copy(col.protection)
+        tmp.alignment = copy.copy(col.alignment)
+        tmp.value = col.value
+
+        if col.column == 'A':
+            sheet2.merge_cells(start_row=1,start_column=1,end_row=1,end_column=6)
+            continue
+
+        # print(col.row, col.column)
+
+# tmp = sheet2.cell(row=1, column=1)
+# if sheet.cell(row=1, column=1).has_style:
+#     tmp.font = copy.copy(sheet.cell(row=1, column=1).font)
+#     tmp.border = copy.copy(sheet.cell(row=1, column=1).border)
+#     tmp.fill = copy.copy(sheet.cell(row=1, column=1).fill)
+#     tmp.number_format = copy.copy(sheet.cell(row=1, column=1).number_format)
+#     tmp.protection = copy.copy(sheet.cell(row=1, column=1).protection)
+#     tmp.alignment = copy.copy(sheet.cell(row=1, column=1).alignment)
+#     tmp.value = sheet.cell(row=1, column=1).value
 
 
 # sheet2.cell(row=1, column=1).value = tmp
